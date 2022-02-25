@@ -1,0 +1,17 @@
+{
+    "name": "itgasmobi/paypal-api",
+    "description": "Connection Api Paypal",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Itgasmobi\\PaypalApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "It Gasmobi",
+            "email": "it@gasmobi.com"
+        }
+    ],
+    "require": {}
+}
