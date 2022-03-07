@@ -2,16 +2,61 @@
 
 namespace Itgasmobi\PaypalApi\Results\Transaction\ValueObject;
 
+use stdClass;
+
 class Payer
 {
-    private string $email;
+    /**
+     * @var string|null
+     */
+    private ?string $email;
 
     /**
-     * @param string $email
+     * @var string
      */
-    public function __construct(string $email)
+    private string $name;
+
+    /**
+     * @var string|null
+     */
+    private ?string $city;
+
+    /**
+     * @var string|null
+     */
+    private ?string $countryCode;
+
+    /**
+     * @var string|null
+     */
+    private ?string $line;
+
+    /**
+     * @var string|null
+     */
+    private ?string $postalCode;
+
+    /**
+     * @param string|null $email
+     * @param string|null $name
+     * @param string|null $city
+     * @param string|null $countryCode
+     * @param string|null $line
+     * @param string|null $postalCode
+     */
+    public function __construct(?string $email,
+                                ?string $name,
+                                ?string $city,
+                                ?string $countryCode,
+                                ?string $line ,
+                                ?string $postalCode )
     {
         $this->email = $email;
+        $this->name = $name;
+        $this->city = $city;
+        $this->countryCode = $countryCode;
+        $this->line = $line;
+        $this->postalCode = $postalCode;
     }
 
     /**
@@ -22,7 +67,66 @@ class Payer
         return $this->email;
     }
 
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLine(): ?string
+    {
+        return $this->line;
+    }
+
+    /**
+     * @param stdClass $payerStd
+     * @return Payer
+     */
+    public static function createFromStdClass(stdClass $payerStd): Payer
+    {
+        $name = null;
+        if($payerStd->payer_name->alternate_full_name) {
+            $name = $payerStd->payer_name->alternate_full_name;
+        }
+
+        return new self(
+            ($payerStd->email_address) ?? null,
+            ($payerStd->payer_name->alternate_full_name) ?? null,
+            ($payerStd->address->city) ?? null,
+            ($payerStd->address->country_code) ?? null,
+            ($payerStd->address->line1) ?? null,
+            ($payerStd->address->postal_code) ?? null,
+
+        );
+    }
 
 }

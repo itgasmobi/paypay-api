@@ -3,6 +3,7 @@
 namespace Itgasmobi\PaypalApi\Results\Transaction;
 
 use Itgasmobi\PaypalApi\Results\Transaction\ValueObject\Amount;
+use Itgasmobi\PaypalApi\Results\Transaction\ValueObject\Code;
 use Itgasmobi\PaypalApi\Results\Transaction\ValueObject\Fee;
 use Itgasmobi\PaypalApi\Results\Transaction\ValueObject\Payer;
 use stdClass;
@@ -13,6 +14,8 @@ class Transaction
 
     private string $transactionStatus;
 
+    private string|null $transactionSubject;
+
     private string $initialDate;
 
     private string $updatedDate;
@@ -22,6 +25,8 @@ class Transaction
     private Fee|null $fee;
 
     private Payer|null $payer;
+
+    private Code $code;
 
     /**
      * @param string $id
@@ -34,19 +39,22 @@ class Transaction
      */
     public function __construct(string $id,
                                 string $transactionStatus,
+                                ?string $transactionSubject,
                                 string $initialDate,
                                 string $updatedDate,
                                 ?Amount $amount,
                                 ?Fee $fee,
-                                ?Payer $payer)
+                                ?Payer $payer, Code $code)
     {
         $this->id = $id;
         $this->transactionStatus = $transactionStatus;
+        $this->transactionSubject = $transactionSubject;
         $this->initialDate = $initialDate;
         $this->updatedDate = $updatedDate;
         $this->amount = $amount;
         $this->fee = $fee;
         $this->payer = $payer;
+        $this->code = $code;
     }
 
     /**
@@ -105,6 +113,22 @@ class Transaction
         return $this->payer;
     }
 
+    /**
+     * @return Code
+     */
+    public function getCode(): Code
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTransactionSubject(): ?string
+    {
+        return $this->transactionSubject;
+    }
+
 
     /**
      * @param stdClass $transactionStd
@@ -130,19 +154,22 @@ class Transaction
         $payer = null;
 
         if(isset($transactionStd->payer_info, $transactionStd->payer_info->email_address)) {
-            $payer = new Payer($transactionStd->payer_info->email_address);
+            $payer = Payer::createFromStdClass($transactionStd->payer_info);
         }
+
+        $transactionCode = new Code($transactionInfo->transaction_event_code);
 
         return new self(
             $transactionInfo->transaction_id,
             $transactionInfo->transaction_status,
+            ($transactionInfo->transaction_subject) ?? null,
             $transactionInfo->transaction_initiation_date,
             $transactionInfo->transaction_updated_date,
             $amount,
             $fee,
-            $payer
+            $payer,
+            $transactionCode
         );
-
 
     }
 

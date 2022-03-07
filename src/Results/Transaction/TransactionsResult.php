@@ -90,7 +90,7 @@ class TransactionsResult
     }
 
     /**
-     * @return array
+     * @return array<Transaction>
      */
     public function getTransactions(): array
     {

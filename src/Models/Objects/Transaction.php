@@ -4,15 +4,18 @@ namespace Itgasmobi\PaypalApi\Models\Objects;
 
 use Carbon\Carbon;
 use Itgasmobi\PaypalApi\Config\RouteApi;
+use Itgasmobi\PaypalApi\Exceptions\ApiInvalidRequestException;
 use Itgasmobi\PaypalApi\Models\PaypalApi;
 
 use Itgasmobi\PaypalApi\Results\Transaction\TransactionsResult;
 use Itgasmobi\PaypalApi\Util\Curl;
+use stdClass;
 
 class Transaction extends PaypalApi
 {
+
     /**
-     * @return void
+     * @return TransactionsResult
      */
     public function get(string $startDate, string $endDate, string $fields = 'all', int $pageSize = 250, $page = 1)
     {
@@ -28,8 +31,9 @@ class Transaction extends PaypalApi
         ]);
 
         $results = Curl::callRoute($route,$this->token);
+        $this->checkErrorResponse($results);
 
-        $this->parseResults($results);
+       return $this->parseResults($results);
     }
 
     public function getSingle()
@@ -37,8 +41,12 @@ class Transaction extends PaypalApi
 
     }
 
-    private function parseResults(\stdClass $results)
+    /**
+     * @param stdClass $results
+     * @return TransactionsResult
+     */
+    private function parseResults(stdClass $results): TransactionsResult
     {
-       $transactionResult = TransactionsResult::createFromStdClass($results);
+       return TransactionsResult::createFromStdClass($results);
     }
 }

@@ -4,13 +4,17 @@ namespace Itgasmobi\PaypalApi\Models;
 
 use Itgasmobi\PaypalApi\Config\Configuration;
 use Itgasmobi\PaypalApi\Config\RouteApi;
+use Itgasmobi\PaypalApi\Exceptions\ApiInvalidRequestException;
 use Itgasmobi\PaypalApi\Util\Curl;
 use Itgasmobi\PaypalApi\Exceptions\EmptyCurlResponseException;
 use Itgasmobi\PaypalApi\Exceptions\EnvironmentNotExistException;
 use Itgasmobi\PaypalApi\Exceptions\ErrorInTokenGenerateException;
+use stdClass;
 
 class PaypalApi
 {
+    public const INVALID_REQUEST = 'INVALID_REQUEST';
+
     private string $clientId;
 
     private string $secretClient;
@@ -91,6 +95,29 @@ class PaypalApi
 
         } catch (EmptyCurlResponseException|\JsonException $e) {
             throw new ErrorInTokenGenerateException();
+        }
+    }
+
+    /**
+     * @throws ApiInvalidRequestException
+     */
+    protected function checkErrorResponse(stdClass $results)
+    {
+        if(!isset($results->name)) {
+            return;
+        }
+
+        if($results->name === self::INVALID_REQUEST) {
+            $message = '';
+            if($results->details[0]->field) {
+                $message .= $results->details[0]->field;
+            }
+
+            if($results->details[0]->issue) {
+                $message .= $results->details[0]->issue;
+            }
+
+            throw new ApiInvalidRequestException($message);
         }
     }
 

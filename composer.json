@@ -13,5 +13,7 @@
             "email": "it@gasmobi.com"
         }
     ],
-    "require": {}
+    "require": {
+        "nesbot/carbon": "^2.57"
+    }
 }

@@ -15,7 +15,7 @@ class Amount
     /**
      *
      */
-    private const TYPE_RECEIVE ='RECEIVE';
+    private const TYPE_RECEIVE ='receive';
 
     /**
      * @var string
