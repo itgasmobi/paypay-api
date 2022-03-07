@@ -14,6 +14,6 @@
         }
     ],
     "require": {
-        "nesbot/carbon": "^2.57"
+        "nesbot/carbon": "^2.53.1"
     }
 }
