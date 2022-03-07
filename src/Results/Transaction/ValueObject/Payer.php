@@ -6,6 +6,11 @@ use stdClass;
 
 class Payer
 {
+
+    /**
+     * @var string|null
+     */
+    private ?string $accountId;
     /**
      * @var string|null
      */
@@ -44,19 +49,29 @@ class Payer
      * @param string|null $line
      * @param string|null $postalCode
      */
-    public function __construct(?string $email,
+    public function __construct(?string $accountId,
+                                ?string $email,
                                 ?string $name,
                                 ?string $city,
                                 ?string $countryCode,
                                 ?string $line ,
                                 ?string $postalCode )
     {
+        $this->accountId = $accountId;
         $this->email = $email;
         $this->name = $name;
         $this->city = $city;
         $this->countryCode = $countryCode;
         $this->line = $line;
         $this->postalCode = $postalCode;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccountId(): ?string
+    {
+        return $this->accountId;
     }
 
     /**
@@ -113,12 +128,8 @@ class Payer
      */
     public static function createFromStdClass(stdClass $payerStd): Payer
     {
-        $name = null;
-        if($payerStd->payer_name->alternate_full_name) {
-            $name = $payerStd->payer_name->alternate_full_name;
-        }
-
         return new self(
+            ($payerStd->account_id) ?? null,
             ($payerStd->email_address) ?? null,
             ($payerStd->payer_name->alternate_full_name) ?? null,
             ($payerStd->address->city) ?? null,
