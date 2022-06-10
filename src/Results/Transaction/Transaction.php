@@ -31,11 +31,13 @@ class Transaction
     /**
      * @param string $id
      * @param string $transactionStatus
+     * @param string|null $transactionSubject
      * @param string $initialDate
      * @param string $updatedDate
      * @param Amount|null $amount
      * @param Fee|null $fee
      * @param Payer|null $payer
+     * @param Code $code
      */
     public function __construct(string $id,
                                 string $transactionStatus,
