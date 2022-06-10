@@ -4,24 +4,6 @@ namespace Itgasmobi\PaypalApi\Results\Transaction\ValueObject;
 
 class Code
 {
-    private const GENERAL_PAYMENT = [
-        'T000' => [
-            'name' => 'General Payment',
-            'category' => 'General payment'
-        ]
-    ];
-
-    private const GENERAL_ACCOUNTING_TRANSFER = [
-        'T200' => [
-            'name' => 'General intraaccount transfer',
-            'category' => 'Account Transfer'
-        ]
-    ];
-
-    private const MESSAGES = [
-        self::GENERAL_PAYMENT,
-        self::GENERAL_ACCOUNTING_TRANSFER
-    ];
     /**
      * @var string
      */
