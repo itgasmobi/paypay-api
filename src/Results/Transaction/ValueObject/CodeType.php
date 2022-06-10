@@ -45,6 +45,12 @@ class CodeType
         'name' => 'General Credit Card Deposit',
         'category' => 'General Credit Card Deposit'
     ];
+     
+    public const CHECKOUT_API_CODE = 'T0006';
+    public const CHECKOUT_API = [
+        'name' => 'PayPal Checkout APIs.',
+        'category' => 'PayPal account-to-PayPal account payment'
+    ];
 
 
 
@@ -55,7 +61,8 @@ class CodeType
         self::PRE_APPROVED_PAYMENT_BILL_USER_CODE => self::PRE_APPROVED_PAYMENT_BILL_USER,
         self::BANK_DEPOSIT_TO_PP_ACCOUNT_CODE => self::BANK_DEPOSIT_TO_PP_ACCOUNT,
         self::MASS_PAY_PAYMENT_CODE => self::MASS_PAY_PAYMENT,
-        self::GENERAL_CREDIT_CARD_DEPOSIT_CODE => self::GENERAL_CREDIT_CARD_DEPOSIT
+        self::GENERAL_CREDIT_CARD_DEPOSIT_CODE => self::GENERAL_CREDIT_CARD_DEPOSIT,
+        self::CHECKOUT_API_CODE => self::CHECKOUT_API
     ];
 
 
